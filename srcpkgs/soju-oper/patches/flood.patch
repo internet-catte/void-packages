@@ -1,0 +1,33 @@
+disable flood prot
+
+--- a/conn.go
++++ b/conn.go
+@@ -11,7 +11,6 @@ import (
+ 	"time"
+ 	"unicode"
+ 
+-	"golang.org/x/time/rate"
+ 	"gopkg.in/irc.v4"
+ 	"nhooyr.io/websocket"
+ )
+@@ -138,19 +137,13 @@ func newConn(srv *Server, ic ircConn, options *connOptions) *conn {
+ 	}
+ 
+ 	go func() {
+-		ctx, cancel := c.NewContext(context.Background())
++		_, cancel := c.NewContext(context.Background())
+ 		defer cancel()
+ 
+-		rl := rate.NewLimiter(rate.Every(options.RateLimitDelay), options.RateLimitBurst)
+ 		for msg := range outgoing {
+ 			if msg == nil {
+ 				break
+ 			}
+-
+-			if err := rl.Wait(ctx); err != nil {
+-				break
+-			}
+-
+ 			c.logger.Debugf("sent: %v", msg)
+ 			c.conn.SetWriteDeadline(time.Now().Add(writeTimeout))
+ 			if err := c.conn.WriteMessage(msg); err != nil {
