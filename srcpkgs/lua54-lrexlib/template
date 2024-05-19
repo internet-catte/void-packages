@@ -1,0 +1,36 @@
+# Template file for 'lua54-lrexlib'
+pkgname=lua54-lrexlib
+version=2.9.2
+revision=1
+hostmakedepends="pkg-config"
+makedepends="lua54-devel pcre2-devel"
+short_desc="Lua bindings for PCRE2 and POSIX regex libraries (5.4.x)"
+maintainer="Orphaned <orphan@voidlinux.org>"
+license="MIT"
+homepage="https://rrthomas.github.io/lrexlib/"
+distfiles="https://github.com/rrthomas/lrexlib/archive/refs/tags/rel-${version//./-}.tar.gz"
+checksum=e32577792b199b2daa0106df59417c29f7e22f232c594be75564e3cc201ec12e
+
+do_build() {
+	_build_variant() {
+		local _obj="$1"
+		shift
+
+		$CC $CFLAGS  $(pkg-config --cflags lua5.4) \
+			-shared -fPIC -o "$_obj" "$@" \
+			-DVERSION='"$version"'
+	}
+
+	_build_variant rex_pcre2.so \
+		src/common.c src/pcre2/lpcre2.c src/pcre2/lpcre2_f.c \
+		-lpcre2-8 -DPCRE2_CODE_UNIT_WIDTH=8
+
+	_build_variant rex_posix.so \
+		src/common.c src/posix/lposix.c
+}
+
+do_install() {
+	vinstall rex_pcre2.so 755 /usr/lib/lua/5.4/
+	vinstall rex_posix.so 755 /usr/lib/lua/5.4/
+	vlicense LICENSE
+}
