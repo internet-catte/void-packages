@@ -1,0 +1,21 @@
+# Template file for 'snowcone'
+pkgname=snowcone
+version=0.0.0
+revision=8
+_rev=2e175b4d372a644c77ecfc7170bd25cd8b2654fb
+build_style=cmake
+hostmakedepends="pkg-config"
+makedepends="lua54-devel libidn-devel openssl-devel ncurses-devel geoip-devel
+ libarchive-devel boost-devel vectorscan-devel"
+depends="lua54-mmdb lua54-penlight lua54-lrexlib"
+short_desc="IRCd server notice console"
+maintainer="Orphaned <orphan@voidlinux.org>"
+license="ISC"
+homepage="https://github.com/glguy/snowcone"
+distfiles="https://github.com/glguy/snowcone/archive/${_rev}.tar.gz"
+checksum=18f13ee2a40e7adb2ddcd99c9e51d2efeb80c9f57923bf272586d89370fd767d
+
+post_install() {
+	vbin scripts/tmux-wrap.sh tmux-wrap
+	vlicense LICENSE
+}
