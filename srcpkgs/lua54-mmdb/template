@@ -1,0 +1,16 @@
+# Template file for 'lua54-mmdb'
+pkgname=lua54-mmdb
+version=0.2
+revision=1
+depends="lua54"
+short_desc="Maxmind database parser for lua (5.4.x)"
+maintainer="Orphaned <orphan@voidlinux.org>"
+license="MIT"
+homepage="https://github.com/daurnimator/mmdblua"
+distfiles="https://github.com/daurnimator/mmdblua/archive/refs/tags/v${version}.tar.gz"
+checksum=f81f06613eefaaa306e714abf425e69e2df6ec2007916d8acd910a044727cfa4
+
+do_install() {
+	vinstall mmdb/init.lua 644 /usr/share/lua/5.4/mmdb
+	vlicense LICENSE.md
+}
