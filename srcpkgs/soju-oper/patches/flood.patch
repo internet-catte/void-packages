@@ -2,34 +2,12 @@ disable flood prot
 
 --- a/conn.go
 +++ b/conn.go
-@@ -11,7 +11,6 @@
- 	"unicode"
- 
- 	"github.com/coder/websocket"
--	"golang.org/x/time/rate"
- 	"gopkg.in/irc.v4"
- )
- 
-@@ -136,10 +135,9 @@
+@@ -134,7 +134,7 @@
+ 		logger:     options.Logger,
+ 		outgoingCh: outgoingCh,
+ 		closedCh:   make(chan struct{}),
+-		rateLimit:  true,
++		rateLimit:  false,
  	}
  
  	go func() {
--		ctx, cancel := c.NewContext(context.Background())
-+		_, cancel := c.NewContext(context.Background())
- 		defer cancel()
- 
--		rl := rate.NewLimiter(rate.Every(options.RateLimitDelay), options.RateLimitBurst)
- 		for {
- 			var msg *irc.Message
- 			select {
-@@ -150,10 +148,6 @@
- 				break
- 			}
- 
--			if err := rl.Wait(ctx); err != nil {
--				break
--			}
--
- 			c.logger.Debugf("sent: %v", msg)
- 			c.conn.SetWriteDeadline(time.Now().Add(writeTimeout))
- 			if err := c.conn.WriteMessage(msg); err != nil {
