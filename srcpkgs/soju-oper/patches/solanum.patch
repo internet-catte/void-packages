@@ -14,7 +14,7 @@ diff --git a/upstream.go b/upstream.go
 index 9173c3a..00f72cf 100644
 --- a/upstream.go
 +++ b/upstream.go
-@@ -1587,7 +1587,7 @@ func (uc *upstreamConn) handleMessage(ctx context.Context, msg *irc.Message) err
+@@ -1638,7 +1638,7 @@ func (uc *upstreamConn) handleMessage(ctx context.Context, msg *irc.Message) err
  		}
  
  		dc.SendMessage(ctx, msg)
@@ -50,10 +50,10 @@ diff --git a/downstream.go b/downstream.go
 index f48653e..af15e75 100644
 --- a/downstream.go
 +++ b/downstream.go
-@@ -252,6 +252,10 @@ var needAllDownstreamCaps = map[string]string{
- 	"multi-prefix":     "",
+@@ -253,6 +253,10 @@ var needAllDownstreamCaps = map[string]string{
  
- 	"draft/extended-monitor": "",
+ 	"draft/extended-monitor":  "",
+ 	"draft/message-redaction": "",
 +
 +	"solanum.chat/identify-msg": "",
 +	"solanum.chat/oper":         "",
@@ -80,10 +80,10 @@ diff --git a/upstream.go b/upstream.go
 index 00f72cf..3765083 100644
 --- a/upstream.go
 +++ b/upstream.go
-@@ -45,6 +45,10 @@ var permanentUpstreamCaps = map[string]bool{
- 
+@@ -46,6 +46,10 @@ var permanentUpstreamCaps = map[string]bool{
  	"draft/account-registration": true,
  	"draft/extended-monitor":     true,
+ 	"draft/message-redaction":    true,
 +
 +	"solanum.chat/oper":         true,
 +	"solanum.chat/realhost":     true,
