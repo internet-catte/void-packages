@@ -197,16 +197,16 @@ index af15e75..24585f1 100644
  			return err
  		}
  
-+		uc.enqueueCommand(dc, msg)
++		uc.enqueueCommand(ctx, dc, msg)
 +	case "WHOWAS":
 +		uc, err := dc.upstreamForCommand(msg.Command)
 +		if err != nil {
 +			return err
 +		}
 +
- 		uc.enqueueCommand(dc, msg)
- 	case "PRIVMSG", "NOTICE", "TAGMSG":
- 		var targetsStr, text string
+ 		uc.enqueueCommand(ctx, dc, msg)
+ 	case "PRIVMSG", "NOTICE", "TAGMSG", "REDACT":
+ 		isText := msg.Command == "PRIVMSG" || msg.Command == "NOTICE"
 diff --git a/upstream.go b/upstream.go
 index 3765083..79528a5 100644
 --- a/upstream.go
